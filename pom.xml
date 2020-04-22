@@ -20,7 +20,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>doryanbessiere.backdoor.mbd.Main</mainClass>
+							<mainClass>isotopestudio.backdoor.network.server.GameServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
