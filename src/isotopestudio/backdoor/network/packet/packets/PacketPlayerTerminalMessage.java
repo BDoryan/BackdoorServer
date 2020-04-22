@@ -1,8 +1,5 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import isotopestudio.backdoor.game.BackdoorGame;
-import isotopestudio.backdoor.game.applications.TerminalApplication;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -31,15 +28,6 @@ public class PacketPlayerTerminalMessage extends Packet {
 	@Override
 	public void read() {
 		this.message = readString();
-	}
-
-	@Override
-	public void process(GameClient client) {
-		if(BackdoorGame.getGameParty() != null) {
-			if(TerminalApplication.main != null) {
-				TerminalApplication.main.info(getMessage());
-			}
-		}
 	}
 
 	@Override

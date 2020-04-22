@@ -1,12 +1,9 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import isotopestudio.backdoor.core.elements.GameElement;
-import isotopestudio.backdoor.core.player.Player;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
-import isotopestudio.backdoor.network.player.NetworkedPlayer;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
+import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class PacketPlayerMoneyUpdate extends Packet {
 
@@ -32,11 +29,6 @@ public class PacketPlayerMoneyUpdate extends Packet {
 	@Override
 	public void read() {
 		money = readInt();
-	}
-
-	@Override
-	public void process(GameClient client) {
-		client.setMoney(getMoney());
 	}
 
 	@Override

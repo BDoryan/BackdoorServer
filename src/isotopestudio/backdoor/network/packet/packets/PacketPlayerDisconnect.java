@@ -3,8 +3,6 @@ package isotopestudio.backdoor.network.packet.packets;
 import java.util.UUID;
 
 import doryanbessiere.isotopestudio.commons.lang.LangMessage;
-import isotopestudio.backdoor.core.player.Player;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -42,23 +40,8 @@ public class PacketPlayerDisconnect extends Packet {
 	}
 
 	@Override
-	public void process(GameClient client) {
-		disconnect(client, getUUID(), getReason());
-	}
-
-	@Override
 	public void process(GameServer server, GameServerClient client) {
 		disconnect(server, client, getReason());
-	}
-	
-	public static void disconnect(GameClient client, UUID uuid, String reason) {
-		if (client.getUUID().toString().equalsIgnoreCase(uuid.toString())) {
-			client.setIdentified(false);
-			client.getPlayers().clear();
-			client.disconnect(reason);
-		} else {
-			client.getPlayers().remove(uuid.toString());
-		}
 	}
 	
 	public static void disconnect(GameServer server, GameServerClient client, String reason) {

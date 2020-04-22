@@ -14,7 +14,6 @@ import doryanbessiere.isotopestudio.commons.GsonInstance;
 import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
 import isotopestudio.backdoor.core.map.MapData;
-import isotopestudio.backdoor.core.party.Party;
 import isotopestudio.backdoor.core.player.Player;
 import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
@@ -23,8 +22,11 @@ import isotopestudio.backdoor.network.packet.packets.PacketLoadMap;
 import isotopestudio.backdoor.network.packet.packets.PacketPing;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerDisconnect;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerKick;
-import isotopestudio.backdoor.network.player.NetworkedPlayer;
 import isotopestudio.backdoor.network.server.command.ICommand;
+import isotopestudio.backdoor.network.server.map.ServerMapData;
+import isotopestudio.backdoor.network.server.party.Party;
+import isotopestudio.backdoor.network.server.party.TeamManager;
+import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class GameServer extends Thread {
 
@@ -39,7 +41,7 @@ public class GameServer extends Thread {
 				for (GameElement node : GameServer.mapData.getElements().values()) {
 					if(node.getType() == GameElementType.SERVER)continue;
 					if(node.getTeam() == null)continue;
-					for (NetworkedPlayer player : node.getTeam().getPlayers()) {
+					for (NetworkedPlayer player : TeamManager.getPlayers(node.getTeam())) {
 						player.addMoney(5);
 					}
 				}
@@ -50,12 +52,15 @@ public class GameServer extends Thread {
 			public void run() {
 				if(GameServer.mapData == null)return;
 				for (GameElement server : GameServer.mapData.getTeamServers().values()) {
-					for (Player player : server.getTeam().getPlayers()) {
+					for (Player player : TeamManager.getPlayers(server.getTeam())) {
 						player.addMoney(1);
 					}
 				}
 			}
 		}, 0, 10000);
+
+		TeamManager.init();
+		
 		gameServer = new GameServer(66);
 		gameServer.start();
 	}
@@ -230,7 +235,7 @@ public class GameServer extends Thread {
 
 		public void disconnected() {
 			if (getTeam() != null)
-				getTeam().leave(this);
+				TeamManager.removePlayer(getTeam(), this);
 		}
 
 		public void kick(String reason) {
@@ -262,13 +267,7 @@ public class GameServer extends Thread {
 	}
 
 	public boolean isFull() {
-		boolean is_full = true;
-		for (Team team : Team.values()) {
-			if (team.getPlayers().size() < team.getMaxPlayers()) {
-				is_full = false;
-			}
-		}
-		return is_full;
+		return TeamManager.isFull();
 	}
 
 	public synchronized void readPacket(Packet packet, GameServerClient client) {
@@ -316,7 +315,7 @@ public class GameServer extends Thread {
 
 	public static MapData getMap() {
 		if (mapData == null) {
-			mapData = MapData.mapDefault();
+			mapData = ServerMapData.mapDefault();
 		}
 		return mapData;
 	}

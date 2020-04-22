@@ -1,6 +1,5 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -29,11 +28,6 @@ public class PacketPlayerKick extends Packet {
 	@Override
 	public void read() {
 		this.reason = readString();
-	}
-
-	@Override
-	public void process(GameClient client) {
-		System.out.println("You have been kicked "+getUUID()+".");
 	}
 
 	@Override

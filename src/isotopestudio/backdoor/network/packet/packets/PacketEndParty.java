@@ -1,9 +1,6 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import isotopestudio.backdoor.core.party.PartyState;
 import isotopestudio.backdoor.core.team.Team;
-import isotopestudio.backdoor.game.BackdoorGame;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -32,13 +29,6 @@ public class PacketEndParty extends Packet {
 	@Override
 	public void read() {
 		this.winner = Team.get(readString());
-	}
-
-	@Override
-	public void process(GameClient client) {
-		if(BackdoorGame.getGameParty() != null) {
-			BackdoorGame.getGameParty().endParty(getWinner());
-		}
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package isotopestudio.backdoor.network.packet.packets;
 
 import doryanbessiere.isotopestudio.commons.lang.LangMessage;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -19,11 +18,6 @@ public class PacketPlayerDisconnectCurrentElement extends Packet {
 	
 	@Override
 	public void read() {
-	}
-
-	@Override
-	public void process(GameClient client) {
-		client.setTargetAddress(null);
 	}
 
 	@Override

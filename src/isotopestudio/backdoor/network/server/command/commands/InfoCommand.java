@@ -1,8 +1,8 @@
 package isotopestudio.backdoor.network.server.command.commands;
 
-import isotopestudio.backdoor.network.player.NetworkedPlayer;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.command.ICommand;
+import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class InfoCommand implements ICommand {
 

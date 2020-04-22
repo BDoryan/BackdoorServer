@@ -11,11 +11,11 @@ import doryanbessiere.isotopestudio.api.authentification.Response;
 import doryanbessiere.isotopestudio.api.authentification.User;
 import doryanbessiere.isotopestudio.commons.lang.LangMessage;
 import isotopestudio.backdoor.core.team.Team;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
-import isotopestudio.backdoor.network.player.NetworkedPlayer;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
+import isotopestudio.backdoor.network.server.party.TeamManager;
+import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class PacketPlayerLogin extends Packet {
 
@@ -49,10 +49,6 @@ public class PacketPlayerLogin extends Packet {
 	}
 
 	@Override
-	public void process(GameClient client) {
-	}
-
-	@Override
 	public void process(GameServer server, GameServerClient client) {
 		if (!(server.getPlayers().isEmpty())) {
 			for (NetworkedPlayer player : server.getPlayers()) {
@@ -81,7 +77,7 @@ public class PacketPlayerLogin extends Packet {
 				}
 				client.setUsername(username);
 				client.setUUID(UUID.fromString(response.getInformations().get("uuid")+""));
-				client.setTeam(Team.joinAuto(client));
+				client.setTeam(TeamManager.autoJoin(client));
 				
 				server.getPlayers().add(client);
 				server.sendAll(new PacketPlayerConnected(client.getUsername(), client.getUUID().toString(), client.getTeam()));

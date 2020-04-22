@@ -1,8 +1,5 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import doryanbessiere.isotopestudio.commons.GsonInstance;
-import isotopestudio.backdoor.core.map.MapData;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -37,15 +34,6 @@ public class PacketLoadMap extends Packet {
 	public void read() {
 		this.json_length = readInt();
 		this.json = readString();
-	}
-
-	@Override
-	public void process(GameClient client) {
-		if(getJson().length() != json_length) {
-			System.err.println("The map is not complete");
-			return;
-		}
-		client.setMap(GsonInstance.instance().fromJson(getJson(), MapData.class));
 	}
 
 	@Override

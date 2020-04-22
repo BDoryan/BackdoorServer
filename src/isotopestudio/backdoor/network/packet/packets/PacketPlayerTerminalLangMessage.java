@@ -1,14 +1,15 @@
 package isotopestudio.backdoor.network.packet.packets;
 
 import doryanbessiere.isotopestudio.commons.lang.LangMessage;
-import isotopestudio.backdoor.game.BackdoorGame;
-import isotopestudio.backdoor.game.applications.TerminalApplication;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
 
 public class PacketPlayerTerminalLangMessage extends Packet {
+
+	public static int LOG_INFO = 0;
+	public static int LOG_ERROR = 1;
+	public static int LOG_WARNING = 2;
 
 	public PacketPlayerTerminalLangMessage() {
 		super(PLAYER_TERMINAL_LANG_MESSAGE);
@@ -19,7 +20,7 @@ public class PacketPlayerTerminalLangMessage extends Packet {
 	}
 
 	public PacketPlayerTerminalLangMessage(LangMessage langMessage) {
-		super(PLAYER_TERMINAL_LANG_MESSAGE, TerminalApplication.LOG_INFO, langMessage.toJson());	
+		super(PLAYER_TERMINAL_LANG_MESSAGE, PacketPlayerTerminalLangMessage.LOG_INFO, langMessage.toJson());	
 	}
 
 	@Override
@@ -33,20 +34,15 @@ public class PacketPlayerTerminalLangMessage extends Packet {
 	public LangMessage getLangMessage() {
 		return langMessage;
 	}
+	
+	public int getLogType() {
+		return logType;
+	}
 
 	@Override
 	public void read() {
 		this.logType = readInt();
 		this.langMessage = LangMessage.fromJson(readString());
-	}
-
-	@Override
-	public void process(GameClient client) {
-		if(BackdoorGame.getGameParty() != null) {
-			if(TerminalApplication.main != null) {
-				TerminalApplication.main.log(logType, langMessage.message());
-			}
-		}
 	}
 
 	@Override

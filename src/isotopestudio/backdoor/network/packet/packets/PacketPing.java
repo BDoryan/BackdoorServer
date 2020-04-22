@@ -1,6 +1,5 @@
 package isotopestudio.backdoor.network.packet.packets;
 
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -29,13 +28,6 @@ public class PacketPing extends Packet {
 	@Override
 	public void read() {
 		this.time = readLong();
-	}
-
-	@Override
-	public void process(GameClient client) {
-		long latency = System.currentTimeMillis() - getTime();
-		client.sendPacket(new PacketPingReply(latency));
-		client.setPing(latency);
 	}
 
 	@Override

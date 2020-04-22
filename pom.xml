@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>isotopestudio.backdoor.network</groupId>
 	<artifactId>BackdoorServer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.28-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -47,12 +47,8 @@
 
 	<repositories>
 		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>jcenter</id>
-			<name>jcenter-bintray</name>
-			<url>https://jcenter.bintray.com</url>
+			<id>central</id>
+			<url>http://isotope-studio.fr:8081/artifactory/libs-release</url>
 		</repository>
 	</repositories>
 
@@ -65,6 +61,11 @@
 		<dependency>
 			<groupId>doryanbessiere.isotopestudio.api</groupId>
 			<artifactId>isotopestudioapi</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>isotopestudio.backdoor.core</groupId>
+			<artifactId>backdoorcore</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>

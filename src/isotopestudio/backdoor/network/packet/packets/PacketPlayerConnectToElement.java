@@ -2,11 +2,10 @@ package isotopestudio.backdoor.network.packet.packets;
 
 import java.util.Random;
 
-import isotopestudio.backdoor.game.applications.NetworkApplication;
-import isotopestudio.backdoor.network.client.GameClient;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
+import isotopestudio.backdoor.network.server.elements.GameElement;
 
 public class PacketPlayerConnectToElement extends Packet {
 
@@ -35,15 +34,10 @@ public class PacketPlayerConnectToElement extends Packet {
 	}
 
 	@Override
-	public void process(GameClient client) {
-		client.setTargetAddress(getAdress());
-	}
-
-	@Override
 	public void process(GameServer server, GameServerClient client) {
 		if(server.getParty() != null && server.getParty().isStarted()) {
 			if(server.getParty().connect(client, getAdress())){
-				String command = NetworkApplication.fake_commands[new Random().nextInt(NetworkApplication.fake_commands.length-1)];
+				String command = GameElement.fake_commands[new Random().nextInt(GameElement.fake_commands.length-1)];
 				client.setCommand(command);
 				client.sendPacket(new PacketPlayerAttackElement(command));	
 			}
