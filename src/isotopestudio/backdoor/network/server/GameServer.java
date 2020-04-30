@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import doryanbessiere.isotopestudio.commons.GsonInstance;
+import doryanbessiere.isotopestudio.commons.RunnerUtils;
 import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
 import isotopestudio.backdoor.core.map.MapData;
@@ -33,6 +34,17 @@ public class GameServer extends Thread {
 	public static GameServer gameServer;
 
 	public static void main(String[] args) {
+		RunnerUtils arguments= new RunnerUtils(args);
+		arguments.read();
+		
+		int port = 66;
+		if(arguments.contains("port")) {
+			try {
+				port = Integer.valueOf(arguments.getString("port"));
+			} catch (Exception e) {
+			}
+		}
+		
 		ICommand.listenJavaConsole().start();
 		new Timer().schedule(new TimerTask() {
 			@Override
@@ -41,23 +53,13 @@ public class GameServer extends Thread {
 				for (GameElement node : GameServer.mapData.getElements().values()) {
 					if(node.getType() == GameElementType.SERVER)continue;
 					if(node.getTeam() == null)continue;
+					if(!node.isLinked())return;
 					for (NetworkedPlayer player : TeamManager.getPlayers(node.getTeam())) {
 						player.addMoney(5);
 					}
 				}
 			}
 		}, 0, 5000);
-		new Timer().schedule(new TimerTask() {
-			@Override
-			public void run() {
-				if(GameServer.mapData == null)return;
-				for (GameElement server : GameServer.mapData.getTeamServers().values()) {
-					for (Player player : TeamManager.getPlayers(server.getTeam())) {
-						player.addMoney(1);
-					}
-				}
-			}
-		}, 0, 10000);
 
 		TeamManager.init();
 		

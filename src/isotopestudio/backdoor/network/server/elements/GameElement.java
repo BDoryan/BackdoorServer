@@ -73,15 +73,15 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 			setTeamPoint(team, point);
 
 			/**
-			 * Quand le noeud est neutre on rajoute un point à chaque joueur
+			 * Quand le noeud est neutre on rajoute un point ï¿½ chaque joueur
 			 * 
-			 * Quand le noeud appartient à une équipe on fait un système de duel: quand la
-			 * team qui a le serveur attack enlève un point à l'adversaire
+			 * Quand le noeud appartient ï¿½ une ï¿½quipe on fait un systï¿½me de duel: quand la
+			 * team qui a le serveur attack enlï¿½ve un point ï¿½ l'adversaire
 			 * 
 			 */
 
 			if (getTeam() != null) {
-				if(getTeam() == team) // L'équipe possède déjà le serveur
+				if(getTeam() == team) // L'ï¿½quipe possï¿½de dï¿½jï¿½ le serveur
 					return;
 				for (Team team_ : Team.values()) {
 					if (team_ != team) {
@@ -105,9 +105,9 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 					}
 					setLinked(true);
 					/*
-					 * - On récupère tous les noeuds de l'équipe
-					 * - On vérifie si le noeud est défini comme 'linked'
-					 * - Si ce n'est pas le cas alors qu'il est désormais 'linked' on lui défini sa variable et on le met à jours pour
+					 * - On rï¿½cupï¿½re tous les noeuds de l'ï¿½quipe
+					 * - On vï¿½rifie si le noeud est dï¿½fini comme 'linked'
+					 * - Si ce n'est pas le cas alors qu'il est dï¿½sormais 'linked' on lui dï¿½fini sa variable et on le met ï¿½ jours pour
 					 * les joueurs
 					 */
 					for (GameElement node : GameServer.gameServer.getParty().getNodes(getTeam())) {
@@ -117,9 +117,6 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 						}
 					}
 				} else {
-					if (getTeam() == team)
-						return;
-
 					for (Team team_ : Team.values()) {
 						setTeamPoint(team_, 0);
 					}
@@ -131,9 +128,9 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 
 					/*
 					 * 
-					 * - On récupère tous les noeuds de l'équipe
-					 * - On vérifie si le noeud n'est pas 'linked' on lui défini sa variable et on envoie l'informations aux joueurs
-					 * et on déconnecte l'équipe 
+					 * - On rï¿½cupï¿½re tous les noeuds de l'ï¿½quipe
+					 * - On vï¿½rifie si le noeud n'est pas 'linked' on lui dï¿½fini sa variable et on envoie l'informations aux joueurs
+					 * et on dï¿½connecte l'ï¿½quipe 
 					 */
 					for (GameElement node : GameServer.gameServer.getParty().getNodes(old_team)) {
 						if (!GameServer.gameServer.getParty().isLinked(node, old_team)) {
@@ -144,9 +141,9 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 					}
 
 					/*
-					 * - On récupère les joueurs de l'ancienne équipe
-					 * - On vérifie si ils sont connectés sur une noeuds/serveurs et si il n'est plus 'linked'
-					 * - On déconnecte l'équipe
+					 * - On rï¿½cupï¿½re les joueurs de l'ancienne ï¿½quipe
+					 * - On vï¿½rifie si ils sont connectï¿½s sur une noeuds/serveurs et si il n'est plus 'linked'
+					 * - On dï¿½connecte l'ï¿½quipe
 					 */
 					ArrayList<NetworkedPlayer> players = new ArrayList<NetworkedPlayer>();
 					players.addAll(TeamManager.getPlayers(old_team));
