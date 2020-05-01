@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>isotopestudio.backdoor.network</groupId>
 	<artifactId>BackdoorServer</artifactId>
-	<version>0.0.28-SNAPSHOT</version>
+	<version>0.0.31-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>doryanbessiere.isotopestudio.api</groupId>
 			<artifactId>isotopestudioapi</artifactId>
-			<version>1.0.0</version>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>isotopestudio.backdoor.core</groupId>
