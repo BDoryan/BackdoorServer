@@ -63,7 +63,7 @@ public class GameServer extends Thread {
 
 		TeamManager.init();
 		
-		gameServer = new GameServer(66);
+		gameServer = new GameServer(port);
 		gameServer.start();
 	}
 
