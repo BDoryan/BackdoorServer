@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import isotopestudio.backdoor.core.team.Team;
+import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class TeamManager {
@@ -26,6 +27,9 @@ public class TeamManager {
 			i += getPlayers(team).size();
 			max += max_players.get(team);
 		}
+		
+		// edited for single connection (developer function)
+		max = 1;
 		
 		if(i < max)
 			return false;
@@ -60,6 +64,11 @@ public class TeamManager {
 			throw new IllegalStateException(player.getUsername()+" is not in a team -> team="+player.getTeam());
 		}
 		teams_players.get(team).remove(player);
+		if(GameServer.gameServer.getParty().isStarted()) {
+			if(teams_players.get(team).size() <= 0) {
+				GameServer.gameServer.getParty().lose(team);
+			}
+		}
 	}
 	
 	public static ArrayList<NetworkedPlayer> getPlayers(Team team){

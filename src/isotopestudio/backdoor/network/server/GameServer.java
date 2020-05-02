@@ -227,6 +227,7 @@ public class GameServer extends Thread {
 
 		public void disconnect(String reason) {
 			gameServer.getPlayers().remove(this);
+			TeamManager.removePlayer(getTeam(), this);
 			for (NetworkedPlayer player : gameServer.getPlayers()) {
 				player.sendPacket(new PacketPlayerDisconnect(getUUID(), reason));
 			}

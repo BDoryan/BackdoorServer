@@ -3,6 +3,7 @@ package isotopestudio.backdoor.network.server.party;
 import java.util.ArrayList;
 import java.util.List;
 
+import doryanbessiere.isotopestudio.api.IsotopeStudioAPI;
 import doryanbessiere.isotopestudio.commons.GsonInstance;
 import doryanbessiere.isotopestudio.commons.lang.LangMessage;
 import isotopestudio.backdoor.core.elements.GameElementLink;
@@ -110,10 +111,10 @@ public class Party {
 	private GameElement scanEntity(NetworkedPlayer player, GameElement from, GameElement to, String adress) {
 		alreadyScanned.add(to.getUUID().toString());
 		/**
-		 * La bouche récupère toutes les connexions du GameElement puis elle liste une
-		 * par une pour vérifier si leur adress correspond ou pas à celle recherche
+		 * La bouche rï¿½cupï¿½re toutes les connexions du GameElement puis elle liste une
+		 * par une pour vï¿½rifier si leur adress correspond ou pas ï¿½ celle recherche
 		 * 
-		 * Vérification de voir que le destinataire n'est pas le composant précédent
+		 * Vï¿½rification de voir que le destinataire n'est pas le composant prï¿½cï¿½dent
 		 * 
 		 * Si oui alors on retourne le GameElement
 		 * 
@@ -131,16 +132,16 @@ public class Party {
 		}
 
 		/**
-		 * La boucle récupère aussi toutes les connexions du GameElement puis elle liste
+		 * La boucle rï¿½cupï¿½re aussi toutes les connexions du GameElement puis elle liste
 		 * les GameElement (destination)
 		 * 
-		 * Vérification de voir que le destinataire n'est pas le composant précédent
+		 * Vï¿½rification de voir que le destinataire n'est pas le composant prï¿½cï¿½dent
 		 * 
-		 * Vérifier que le le composant destinataire n'a pas déjà été scanné pour éviter
+		 * Vï¿½rifier que le le composant destinataire n'a pas dï¿½jï¿½ ï¿½tï¿½ scannï¿½ pour ï¿½viter
 		 * une boucle infini --> StackOverflawError tmtc
 		 * 
-		 * Si le gameElement appartient à l'équipe du joueur il peut lancer une
-		 * recherche dans celui-ci puis si la recherche trouve un élément on retourne
+		 * Si le gameElement appartient ï¿½ l'ï¿½quipe du joueur il peut lancer une
+		 * recherche dans celui-ci puis si la recherche trouve un ï¿½lï¿½ment on retourne
 		 * celle-ci
 		 * 
 		 */
@@ -188,8 +189,8 @@ public class Party {
 	/*
 	 * WARNING:
 	 * 
-	 * Faire faut faire attention au problème de synchronisation:
-	 * - Pourrais être patch avec un système de paquets avec un système de queue
+	 * Faire faut faire attention au problï¿½me de synchronisation:
+	 * - Pourrais ï¿½tre patch avec un systï¿½me de paquets avec un systï¿½me de queue
 	 * 
 	 */
 	private ArrayList<String> linked_scan = new ArrayList<String>();
@@ -240,6 +241,7 @@ public class Party {
 				((NetworkedPlayer) player).sendPacket(new PacketEndParty(winner));
 			}
 		}
+		System.exit(IsotopeStudioAPI.EXIT_CODE_EXIT);
 	}
 
 	public GameElement getNodeByAddress(String targetAddress) {
