@@ -24,7 +24,7 @@ public class TeamManager {
 		int max = 0;
 		for(Team team : Team.values()) {
 			i += getPlayers(team).size();
-			max = max_players.get(team);
+			max += max_players.get(team);
 		}
 		
 		if(i < max)
