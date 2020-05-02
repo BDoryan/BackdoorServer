@@ -28,9 +28,6 @@ public class TeamManager {
 			max += max_players.get(team);
 		}
 		
-		// edited for single connection (developer function)
-		max = 1;
-		
 		if(i < max)
 			return false;
 		return true;
