@@ -39,7 +39,7 @@ public class PacketPlayerAttackElement extends Packet {
 			if(client.getTargetAddress() != null) {
 				if(client.getCommand().equals(getCommand())) {
 					server.getParty().attack(client, client.getTargetAddress());
-					client.setCommand(GameElement.fake_commands[new Random().nextInt(GameElement.fake_commands.length-1)]);
+					client.setCommand(GameElement.generateRandomString(7));
 					client.sendPacket(new PacketPlayerAttackElement(client.getCommand()));	
 				}
 			}

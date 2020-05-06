@@ -1,12 +1,9 @@
 package isotopestudio.backdoor.network.server.elements;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import isotopestudio.backdoor.core.elements.GameElementType;
-import isotopestudio.backdoor.core.player.Player;
 import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.packets.PacketSendElementData;
 import isotopestudio.backdoor.network.server.GameServer;
@@ -15,9 +12,32 @@ import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class GameElement extends isotopestudio.backdoor.core.elements.GameElement {
 
-	public static final String[] fake_commands = new String[] { "su", "mysql", "redis", "nano", "getinfo", "mkdir", "chmod",
-			"cd", "grep", "install", "update", "write", "bufferedwriter", "scanner", "ls", "rm", "reboot", "su",
-			"sizeof", "size", "apt-get", "constructor", "log", "hostserver", "client", "port", "disconnect" };
+    private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+    private static final String NUMBER = "0123456789";
+    
+    private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
+    private static SecureRandom random = new SecureRandom();
+    
+    public static String generateRandomString(int length) {
+        if (length < 1) throw new IllegalArgumentException();
+
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+
+			// 0-62 (exclusive), random returns 0-61
+            int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
+            char rndChar = DATA_FOR_RANDOM_STRING.charAt(rndCharAt);
+
+            // debug
+            System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
+
+            sb.append(rndChar);
+
+        }
+
+        return sb.toString();
+    }
 	
 	private transient ArrayList<NetworkedPlayer> connected = new ArrayList<NetworkedPlayer>();
 	
