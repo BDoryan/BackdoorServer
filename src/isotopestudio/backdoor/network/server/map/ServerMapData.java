@@ -13,18 +13,18 @@ public class ServerMapData {
 		GameElement red_server= new GameElement(GameElementType.SERVER, "red_server", Team.RED);
 
 		GameElement node_entity_1 = new GameElement(GameElementType.NODE, "node1", null);
-		GameElement node_entity_2 = new GameElement(GameElementType.NODE, "node2", Team.RED);
+		GameElement node_entity_2 = new GameElement(GameElementType.NODE, "node2", null);
 		
-		GameElement node_entity_3 = new GameElement(GameElementType.NODE, "node3",  Team.RED);
-		GameElement node_entity_4 = new GameElement(GameElementType.NODE, "node4", Team.BLUE);
+		GameElement node_entity_3 = new GameElement(GameElementType.NODE, "node3",  null);
+		GameElement node_entity_4 = new GameElement(GameElementType.NODE, "node4", null);
 		GameElement node_entity_5 = new GameElement(GameElementType.NODE, "node5", null);
 		
-		GameElement node_entity_6 = new GameElement(GameElementType.NODE, "node6",  Team.BLUE);
+		GameElement node_entity_6 = new GameElement(GameElementType.NODE, "node6",  null);
 		GameElement node_entity_7 = new GameElement(GameElementType.NODE, "node7", null);
 		GameElement node_entity_8 = new GameElement(GameElementType.NODE, "node8", null);
 		
 		GameElement node_entity_9 = new GameElement(GameElementType.NODE, "node9", null);
-		GameElement node_entity_10 = new GameElement(GameElementType.NODE, "node10", Team.BLUE);
+		GameElement node_entity_10 = new GameElement(GameElementType.NODE, "node10", null);
 		
 		GameElement blue_server= new GameElement(GameElementType.SERVER, "blue_server", Team.BLUE);
 
