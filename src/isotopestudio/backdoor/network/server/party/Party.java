@@ -17,7 +17,6 @@ import isotopestudio.backdoor.network.packet.packets.PacketLoadMap;
 import isotopestudio.backdoor.network.packet.packets.PacketPartyState;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerConnectToElement;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerDisconnectCurrentElement;
-import isotopestudio.backdoor.network.packet.packets.PacketPlayerTerminalLangMessage;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.elements.GameElement;
 import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
@@ -69,21 +68,15 @@ public class Party {
 				player.setTargetAddress(address);
 				player.addMoney(25);
 				player.sendPacket(new PacketPlayerConnectToElement(address));
-				player.sendPacket(new PacketPlayerTerminalLangMessage(
-						new LangMessage("server_you_are_now_connected_to_the_server", "%address%", address)));
 				return true;
 			} else {
 				player.setTargetAddress(null);
 				player.sendPacket(new PacketPlayerConnectToElement(null));
-				player.sendPacket(
-						new PacketPlayerTerminalLangMessage(new LangMessage("server_you_dont_have_enough_money")));
 				return false;
 			}
 		} else {
 			player.setTargetAddress(null);
 			player.sendPacket(new PacketPlayerConnectToElement(null));
-			player.sendPacket(new PacketPlayerTerminalLangMessage(
-					new LangMessage("you_do_not_have_access_to_the_server", "%address%", address)));
 			return false;
 		}
 
@@ -94,8 +87,6 @@ public class Party {
 		if ((entity_target = getEntity(player, player.getTargetAddress())) != null) {
 			player.setTargetAddress(null);
 			player.sendPacket(new PacketPlayerDisconnectCurrentElement());
-			player.sendPacket(
-					new PacketPlayerTerminalLangMessage(new LangMessage("server_you_have_been_disconnected")));
 			entity_target.disconnect(player);
 		}
 		player.setTargetAddress(null);

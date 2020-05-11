@@ -14,8 +14,6 @@ import isotopestudio.backdoor.network.packet.packets.PacketPlayerKick;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerLogin;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerLoginFailed;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerMoneyUpdate;
-import isotopestudio.backdoor.network.packet.packets.PacketPlayerTerminalLangMessage;
-import isotopestudio.backdoor.network.packet.packets.PacketPlayerTerminalMessage;
 import isotopestudio.backdoor.network.packet.packets.PacketSendElementData;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -30,7 +28,6 @@ public abstract class Packet {
 	public static final int DISCONNECT = 5;
 	public static final int KICK = 6;
 	public static final int MAP_LOAD = 7;
-	public static final int PLAYER_TERMINAL_LANG_MESSAGE = 8;
 	public static final int PARTY_STATE = 9;
 	public static final int CONNECT_ENTITY = 10;
 	public static final int DISCONNECT_ENTITY = 11;
@@ -38,7 +35,6 @@ public abstract class Packet {
 	public static final int ATTACK_ELEMENT = 13;
 	public static final int END_PARTY = 14;
 	public static final int PLAYER_MONEY_UPDATE = 15;
-	public static final int PLAYER_TERMINAL_MESSAGE = 16;
 	public static final int PLAYER_CONNECTED = 17;
 
 	public static Packet[] packets = new Packet[] { null,
@@ -49,7 +45,7 @@ public abstract class Packet {
 			new PacketPlayerDisconnect(),
 			new PacketPlayerKick(), 
 			new PacketLoadMap(),
-			new PacketPlayerTerminalLangMessage(),
+			null,
 			new PacketPartyState(),
 			new PacketPlayerConnectToElement(),
 			new PacketPlayerDisconnectCurrentElement(),
@@ -57,7 +53,7 @@ public abstract class Packet {
 			new PacketPlayerAttackElement(),
 			new PacketEndParty(),
 			new PacketPlayerMoneyUpdate(),
-			new PacketPlayerTerminalMessage(),
+			null,
 			new PacketPlayerConnected()
 	};
 

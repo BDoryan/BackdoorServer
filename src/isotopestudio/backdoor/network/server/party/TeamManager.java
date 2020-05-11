@@ -19,7 +19,7 @@ public class TeamManager {
 		}
 	}
 	
-	private static boolean debug_mode = false;
+	private static boolean debug_mode = true;
 	
 	public static boolean isFull() {
 		int i = 0;
@@ -30,7 +30,6 @@ public class TeamManager {
 			max += max_players.get(team);
 		}
 		
-		// return for a single player on server
 		if(debug_mode && i >= 1)
 			return true;
 		

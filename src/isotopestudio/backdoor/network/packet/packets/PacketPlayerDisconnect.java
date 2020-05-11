@@ -50,7 +50,8 @@ public class PacketPlayerDisconnect extends Packet {
 	}
 	
 	private static void leftMessage(GameServer server, GameServerClient client) {
+		/*
 		server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_player_left_the_server", "%username%", client.getUsername())));
-		server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_player_left_a_team", "%username%", client.getUsername(), "%team%", client.getTeam().getPath())));
+		server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_player_left_a_team", "%username%", client.getUsername(), "%team%", client.getTeam().getPath())));*/
 	}
 }

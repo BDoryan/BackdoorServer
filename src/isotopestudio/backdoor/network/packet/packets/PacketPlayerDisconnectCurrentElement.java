@@ -26,7 +26,9 @@ public class PacketPlayerDisconnectCurrentElement extends Packet {
 			if(client.getTargetAddress() != null) {
 				server.getParty().disconnect(client);
 			} else  {
+				/*
 				server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_you_are_already_connected_to_element")));
+				*/
 			}
 		}
 	}

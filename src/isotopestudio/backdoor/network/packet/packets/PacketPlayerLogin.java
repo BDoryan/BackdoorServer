@@ -81,8 +81,10 @@ public class PacketPlayerLogin extends Packet {
 				
 				server.getPlayers().add(client);
 				server.sendAll(new PacketPlayerConnected(client.getUsername(), client.getUUID().toString(), client.getTeam()));
+				/*
 				server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_player_join_the_server", "%username%", client.getUsername())));
 				server.sendAll(new PacketPlayerTerminalLangMessage(new LangMessage("server_player_join_a_team", "%username%", client.getUsername(), "%team%", client.getTeam().getPath())));
+				*/
 				if(server.isFull()) {
 					server.startParty();
 				}
