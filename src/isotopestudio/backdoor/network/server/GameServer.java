@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,7 +17,6 @@ import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
 import isotopestudio.backdoor.core.map.MapData;
 import isotopestudio.backdoor.core.player.Player;
-import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.packet.PacketListener;
 import isotopestudio.backdoor.network.packet.packets.PacketLoadMap;
@@ -32,10 +32,20 @@ import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 public class GameServer extends Thread {
 
 	public static GameServer gameServer;
+	public static String VERSION = null;
 
 	public static void main(String[] args) {
 		RunnerUtils arguments= new RunnerUtils(args);
 		arguments.read();
+		try {
+			java.io.InputStream is = GameServer.class.getClass().getResourceAsStream("/maven.properties");
+			java.util.Properties p = new Properties();
+			p.load(is);
+
+			VERSION = p.getProperty("VERSION");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		int port = 66;
 		if(arguments.contains("port")) {
@@ -90,7 +100,7 @@ public class GameServer extends Thread {
 	public void run() {
 		try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("Game server is online on port -> " + port);
+			System.out.println("Game server ("+VERSION+") is online on port -> " + port);
 			new Thread(new Runnable() {
 
 				long ms = 1000; // 1 second
@@ -321,5 +331,12 @@ public class GameServer extends Thread {
 			mapData = ServerMapData.mapDefault();
 		}
 		return mapData;
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getServerVersion() {
+		return VERSION;
 	}
 }

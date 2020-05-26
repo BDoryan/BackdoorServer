@@ -1,30 +1,32 @@
 package isotopestudio.backdoor.network.packet.packets;
 
+import java.util.ArrayList;
+
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
 import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
-public class PacketPlayerMoneyUpdate extends Packet {
+public class PacketPlayerScriptsUpdate extends Packet {
 
-	public PacketPlayerMoneyUpdate() {
-		super(PLAYER_MONEY_UPDATE);
+	public PacketPlayerScriptsUpdate() {
+		super(PLAYER_SCRIPTS_UPDATE);
 	}
 
-	public PacketPlayerMoneyUpdate(NetworkedPlayer player) {
-		super(PLAYER_MONEY_UPDATE, player.getMoney());
+	public PacketPlayerScriptsUpdate(NetworkedPlayer player, ArrayList<String> scripts) {
+		super(PLAYER_SCRIPTS_UPDATE, scripts);
 	}
 
 	@Override
 	public Packet clone() {
-		return new PacketPlayerMoneyUpdate();
+		return new PacketPlayerScriptsUpdate();
 	}
 
 	@Override
 	public void read() {
 	}
-
+	
 	@Override
-	public void process(GameServer server, GameServerClient client) {
+	public void process(GameServer gameServer, GameServerClient server) {
 	}
 }

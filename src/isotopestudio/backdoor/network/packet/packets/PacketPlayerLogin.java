@@ -23,13 +23,14 @@ public class PacketPlayerLogin extends Packet {
 	public static final int SERVER_FULL = 2;
 	public static final int INVALID_AUTHENTICATION_SESSION = 3;
 	public static final int USERNAME_CHANGED = 4;
+	public static final int INVALID_VERSION = 5;
 
 	public PacketPlayerLogin() {
 		super(LOGIN);
 	}
 
-	public PacketPlayerLogin(User user) {
-		super(LOGIN, user.toJson());
+	public PacketPlayerLogin(User user, String gameVersion) {
+		super(LOGIN, user.toJson(), gameVersion);
 	}
 
 	@Override
@@ -38,18 +39,30 @@ public class PacketPlayerLogin extends Packet {
 	}
 
 	private User user;
+	private String gameVersion;
 
 	public User getUser() {
 		return user;
+	}
+	
+	public String getGameVersion() {
+		return gameVersion;
 	}
 
 	@Override
 	public void read() {
 		this.user = User.fromJson(readString());
+		this.gameVersion = readString();
 	}
 
 	@Override
 	public void process(GameServer server, GameServerClient client) {
+		if(!gameVersion.equals(GameServer.getServerVersion())) {
+			client.sendPacket(new PacketPlayerLoginFailed(PacketPlayerLogin.INVALID_VERSION));
+			client.disconnect("invalid_version");
+			return;
+		}
+		
 		if (!(server.getPlayers().isEmpty())) {
 			for (NetworkedPlayer player : server.getPlayers()) {
 				if (player.getUsername().equalsIgnoreCase(getUser().getUsername())) {

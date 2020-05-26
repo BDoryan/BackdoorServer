@@ -37,7 +37,7 @@ public class PacketPlayerConnectToElement extends Packet {
 	public void process(GameServer server, GameServerClient client) {
 		if(server.getParty() != null && server.getParty().isStarted()) {
 			if(server.getParty().connect(client, getAdress())){
-				client.setCommand(GameElement.generateRandomString(7));
+				client.setCommand(GameElement.generateKey());
 				client.sendPacket(new PacketPlayerAttackElement(client.getCommand()));	
 			}
 		}

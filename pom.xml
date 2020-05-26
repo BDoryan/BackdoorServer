@@ -4,9 +4,27 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>isotopestudio.backdoor.network</groupId>
 	<artifactId>BackdoorServer</artifactId>
-	<version>0.0.45-SNAPSHOT</version>
+	<version>0.0.53-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<targetPath>.</targetPath>
+				<!-- filtering>true</filtering -->
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/maven.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -47,8 +65,36 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<systemPropertyVariables>
+						<VERSION>${project.version}</VERSION>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>resources-profiles</id>
+			<build>
+				<finalName>resources</finalName>
+				<resources>
+					<resource>
+						<targetPath>.</targetPath>
+						<directory>resources/</directory>
+					</resource>
+					<resource>
+						<directory>src/</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -79,7 +125,7 @@
 		<dependency>
 			<groupId>isotopestudio.backdoor.core</groupId>
 			<artifactId>backdoorcore</artifactId>
-			<version>1.0.12</version>
+			<version>1.0.17</version>
 		</dependency>
 	</dependencies>
 </project>

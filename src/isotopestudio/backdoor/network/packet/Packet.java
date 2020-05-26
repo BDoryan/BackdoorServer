@@ -6,6 +6,7 @@ import isotopestudio.backdoor.network.packet.packets.PacketPartyState;
 import isotopestudio.backdoor.network.packet.packets.PacketPing;
 import isotopestudio.backdoor.network.packet.packets.PacketPingReply;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerAttackElement;
+import isotopestudio.backdoor.network.packet.packets.PacketPlayerBuyGameScript;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerConnectToElement;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerConnected;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerDisconnect;
@@ -14,6 +15,7 @@ import isotopestudio.backdoor.network.packet.packets.PacketPlayerKick;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerLogin;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerLoginFailed;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerMoneyUpdate;
+import isotopestudio.backdoor.network.packet.packets.PacketPlayerScriptsUpdate;
 import isotopestudio.backdoor.network.packet.packets.PacketSendElementData;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -36,6 +38,8 @@ public abstract class Packet {
 	public static final int END_PARTY = 14;
 	public static final int PLAYER_MONEY_UPDATE = 15;
 	public static final int PLAYER_CONNECTED = 17;
+	public static final int PLAYER_BUY_GAME_SCRIPT = 18;
+	public static final int PLAYER_SCRIPTS_UPDATE = 19;
 
 	public static Packet[] packets = new Packet[] { null,
 			new PacketPing(), 
@@ -54,7 +58,9 @@ public abstract class Packet {
 			new PacketEndParty(),
 			new PacketPlayerMoneyUpdate(),
 			null,
-			new PacketPlayerConnected()
+			new PacketPlayerConnected(),
+			new PacketPlayerBuyGameScript(),
+			new PacketPlayerScriptsUpdate()
 	};
 
 	public static Packet parsePacket(String data) {

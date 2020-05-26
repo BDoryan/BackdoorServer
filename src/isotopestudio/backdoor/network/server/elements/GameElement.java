@@ -18,7 +18,8 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
     private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + NUMBER;
     private static SecureRandom random = new SecureRandom();
     
-    public static String generateRandomString(int length) {
+    public static String generateKey() {
+    	int length = 5;
         if (length < 1) throw new IllegalArgumentException();
 
         StringBuilder sb = new StringBuilder(length);

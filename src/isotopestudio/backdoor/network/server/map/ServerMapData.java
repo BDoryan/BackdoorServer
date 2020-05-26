@@ -15,7 +15,7 @@ public class ServerMapData {
 		GameElement node_entity_1 = new GameElement(GameElementType.NODE, "node1", null);
 		GameElement node_entity_2 = new GameElement(GameElementType.NODE, "node2", null);
 		
-		GameElement node_entity_3 = new GameElement(GameElementType.NODE, "node3",  null);
+		GameElement node_entity_3 = new GameElement(GameElementType.NODE, "node3", null);
 		GameElement node_entity_4 = new GameElement(GameElementType.NODE, "node4", null);
 		GameElement node_entity_5 = new GameElement(GameElementType.NODE, "node5", null);
 		

@@ -7,12 +7,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
+import isotopestudio.backdoor.core.gamescript.GameScript;
 import isotopestudio.backdoor.core.player.Player;
-import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.packet.PacketListener;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerDisconnect;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerMoneyUpdate;
+import isotopestudio.backdoor.network.packet.packets.PacketPlayerScriptsUpdate;
 
 public abstract class NetworkedPlayer extends Player {
 
@@ -212,21 +213,41 @@ public abstract class NetworkedPlayer extends Player {
 	}
 	
 	@Override
-	public void setMoney(int money) {
+	public void setMoney(double money) {
 		super.setMoney(money);
 		sendPacket(new PacketPlayerMoneyUpdate(this));
 	}
 	
 	@Override
-	public void addMoney(int money) {
+	public void addMoney(double money) {
 		super.addMoney(money);
 		sendPacket(new PacketPlayerMoneyUpdate(this));
 	}
 	
 	@Override
-	public void removeMoney(int money) {
+	public void removeMoney(double money) {
 		super.removeMoney(money);
 		sendPacket(new PacketPlayerMoneyUpdate(this));
+	}
+	
+	@Override
+	public void addGameScript(GameScript gameScript) {
+		super.addGameScript(gameScript);
+		ArrayList<String> scripts = new ArrayList<>();
+		for(GameScript gameScript_ : getScripts()) {
+			scripts.add(gameScript_.getName());
+		}
+		sendPacket(new PacketPlayerScriptsUpdate(this, scripts));
+	}
+	
+	@Override
+	public void removeGameScript(GameScript gameScript) {
+		super.removeGameScript(gameScript);
+		ArrayList<String> scripts = new ArrayList<>();
+		for(GameScript gameScript_ : getScripts()) {
+			scripts.add(gameScript_.getName());
+		}
+		sendPacket(new PacketPlayerScriptsUpdate(this, scripts));
 	}
 	
 	public DataInputStream getInput() {
