@@ -63,7 +63,9 @@ public class Party {
 	public boolean connect(NetworkedPlayer player, String address) {
 		GameElement entity_target = null;
 		if ((entity_target = getEntity(player, address)) != null) {
-			if (player.getMoney() > entity_target.getConnectPrice()) {
+			if (player.getMoney() >= entity_target.getConnectPrice()) {
+				if(entity_target.isOffline())return false;
+				
 				entity_target.connect(player);
 				player.setTargetAddress(address);
 				player.addMoney(25);

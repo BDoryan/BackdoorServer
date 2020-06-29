@@ -19,7 +19,7 @@ public class TeamManager {
 		}
 	}
 
-	private static boolean debug_mode = true;
+	private static boolean debug_mode = false;
 
 	public static boolean isFull() {
 		int i = 0;

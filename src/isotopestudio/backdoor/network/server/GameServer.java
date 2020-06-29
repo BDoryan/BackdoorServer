@@ -15,6 +15,9 @@ import doryanbessiere.isotopestudio.commons.GsonInstance;
 import doryanbessiere.isotopestudio.commons.RunnerUtils;
 import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
+import isotopestudio.backdoor.core.gamescript.GameScript;
+import isotopestudio.backdoor.core.gamescript.GameScript.GameScripts;
+import isotopestudio.backdoor.core.gamescript.GameScriptExecutor;
 import isotopestudio.backdoor.core.map.MapData;
 import isotopestudio.backdoor.core.player.Player;
 import isotopestudio.backdoor.network.packet.Packet;
@@ -24,6 +27,7 @@ import isotopestudio.backdoor.network.packet.packets.PacketPing;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerDisconnect;
 import isotopestudio.backdoor.network.packet.packets.PacketPlayerKick;
 import isotopestudio.backdoor.network.server.command.ICommand;
+import isotopestudio.backdoor.network.server.gamescripts.GameScriptsManager;
 import isotopestudio.backdoor.network.server.map.ServerMapData;
 import isotopestudio.backdoor.network.server.party.Party;
 import isotopestudio.backdoor.network.server.party.TeamManager;
@@ -99,6 +103,9 @@ public class GameServer extends Thread {
 	@Override
 	public void run() {
 		try {
+			System.out.println("Initializing game system");
+			GameScriptsManager.init();
+			
 			serverSocket = new ServerSocket(port);
 			System.out.println("Game server ("+VERSION+") is online on port -> " + port);
 			new Thread(new Runnable() {
@@ -276,6 +283,26 @@ public class GameServer extends Thread {
 			if (gameServer.getPlayers().contains(this))
 				gameServer.getPlayers().remove(this);
 			super.close();
+		}
+
+		/**
+		 * @param game script name
+		 */
+		public void execScript(String name) {
+			GameElement target = GameServer.gameServer.getParty().getEntity(this, getTargetAddress());
+			if(target == null) 
+				return;
+			if(containsScript(name)) {
+				GameScript script = null;
+				for(GameScript script_ : getScripts()) {
+					if(script_.getName().equals(name)) {
+						script = script_;
+						break;
+					}
+				}
+				script.getExectutor().exec(this, target);
+				removeGameScript(script);
+			}
 		}
 	}
 

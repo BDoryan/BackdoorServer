@@ -46,7 +46,7 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 		connected.add(player);
 		if (!getTeamConnected().contains(player.getTeam()))
 			getTeamConnected().add(player.getTeam());
-		GameServer.gameServer.sendAll(new PacketSendElementData(this));
+		updateNetworkedData();
 		if (getType() == GameElementType.SERVER)
 			return;
 		player.removeMoney(50);
@@ -61,14 +61,30 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 				break;
 			}
 		}
-		GameServer.gameServer.sendAll(new PacketSendElementData(this));
+		updateNetworkedData();
 	}
 
 	public ArrayList<NetworkedPlayer> getConnected() {
 		return connected;
 	}
-
+	
+	@Override
+	public void setOffline(boolean offline) {
+		if(offline) {
+			disconnectAll();
+		}
+		super.setOffline(offline);
+		updateNetworkedData();
+	}
+	
+	public void updateNetworkedData() {
+		GameServer.gameServer.sendAll(new PacketSendElementData(this));
+	}
+	
 	public void attack(Team team) {
+		if(isProtected()) {
+			return;
+		}
 		if (getType() == GameElementType.SERVER) {
 			if (team == getTeam()) {
 				int point = getTeamPoint(getTeam()) + 1;
@@ -176,7 +192,7 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 				disconnectAll();
 			}
 		}
-		GameServer.gameServer.sendAll(new PacketSendElementData(this));
+		updateNetworkedData();
 	}
 
 	public void disconnectAll() {
@@ -194,5 +210,23 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 				GameServer.gameServer.getParty().disconnect(player);	
 			}
 		}
+	}
+
+	public void addPoint(Team team, int amount) {
+		int points = getTeamPoint(team) + amount;
+		if(points >= getMaxPoints()) {
+			points = getMaxPoint();
+		}
+		setTeamPoint(team, points);
+		updateNetworkedData();
+	}
+
+	public void removePoint(Team team, int amount) {
+		int points = getTeamPoint(team) - amount;
+		if(points < 0) {
+			points = 0;
+		}
+		setTeamPoint(team, points);
+		updateNetworkedData();
 	}
 }
