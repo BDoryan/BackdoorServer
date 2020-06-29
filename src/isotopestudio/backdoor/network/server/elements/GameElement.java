@@ -69,6 +69,24 @@ public class GameElement extends isotopestudio.backdoor.core.elements.GameElemen
 	}
 	
 	@Override
+	public void setFirewall(int firewall) {
+		super.setFirewall(firewall);
+		updateNetworkedData();
+	}
+	
+	@Override
+	public void setFirewallMax(int firewall_max) {
+		super.setFirewallMax(firewall_max);
+		updateNetworkedData();
+	}
+	
+	@Override
+	public void setProtected(boolean protected_) {
+		super.setProtected(protected_);
+		updateNetworkedData();
+	}
+	
+	@Override
 	public void setOffline(boolean offline) {
 		if(offline) {
 			disconnectAll();

@@ -65,6 +65,7 @@ public class Party {
 		if ((entity_target = getEntity(player, address)) != null) {
 			if (player.getMoney() >= entity_target.getConnectPrice()) {
 				if(entity_target.isOffline())return false;
+				if(player.getTeam() != entity_target.getTeam() && entity_target.isProtected())return false;
 				
 				entity_target.connect(player);
 				player.setTargetAddress(address);
