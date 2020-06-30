@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import doryanbessiere.isotopestudio.api.mysql.SQLDatabase;
 import doryanbessiere.isotopestudio.commons.GsonInstance;
 import doryanbessiere.isotopestudio.commons.RunnerUtils;
 import isotopestudio.backdoor.core.elements.GameElement;
@@ -38,8 +41,14 @@ public class GameServer extends Thread {
 	public static GameServer gameServer;
 	public static String VERSION = null;
 
+	public static boolean official_server = false;
+	public static SQLDatabase database;
+
+	public static UUID session = UUID.randomUUID();
+	public static ArrayList<String> allowedUUIDs = new ArrayList<>();
+
 	public static void main(String[] args) {
-		RunnerUtils arguments= new RunnerUtils(args);
+		RunnerUtils arguments = new RunnerUtils(args);
 		arguments.read();
 		try {
 			java.io.InputStream is = GameServer.class.getClass().getResourceAsStream("/maven.properties");
@@ -50,24 +59,45 @@ public class GameServer extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		int port = 66;
-		if(arguments.contains("port")) {
+		if (arguments.contains("port")) {
 			try {
 				port = Integer.valueOf(arguments.getString("port"));
 			} catch (Exception e) {
 			}
 		}
-		
+
+		if (arguments.contains("online") && arguments.getString("online").equals("true")) {
+			try {
+				String host = arguments.getString("mysql.host");
+				String database = arguments.getString("mysql.database");
+				String username = arguments.getString("mysql.username");
+				String password = arguments.getString("mysql.password");
+
+				allowedUUIDs.addAll(Arrays.asList(arguments.getString("players").split(",")));
+
+				GameServer.database = new SQLDatabase(host, database, username, password);
+				GameServer.database.connect();
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println("Not every argument is recoverable!");
+			}
+		}
+
 		ICommand.listenJavaConsole().start();
 		new Timer().schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if(GameServer.mapData == null)return;
+				if (GameServer.mapData == null)
+					return;
 				for (GameElement node : GameServer.mapData.getElements().values()) {
-					if(node.getType() == GameElementType.SERVER)continue;
-					if(node.getTeam() == null)continue;
-					if(!node.isLinked())return;
+					if (node.getType() == GameElementType.SERVER)
+						continue;
+					if (node.getTeam() == null)
+						continue;
+					if (!node.isLinked())
+						return;
 					for (NetworkedPlayer player : TeamManager.getPlayers(node.getTeam())) {
 						player.addMoney(5);
 					}
@@ -76,9 +106,17 @@ public class GameServer extends Thread {
 		}, 0, 5000);
 
 		TeamManager.init();
-		
+
 		gameServer = new GameServer(port);
 		gameServer.start();
+	}
+
+	public static boolean isOfficialServer() {
+		return official_server;
+	}
+
+	public static SQLDatabase getDatabase() {
+		return database;
 	}
 
 	private int port;
@@ -105,9 +143,9 @@ public class GameServer extends Thread {
 		try {
 			System.out.println("Initializing game system");
 			GameScriptsManager.init();
-			
+
 			serverSocket = new ServerSocket(port);
-			System.out.println("Game server ("+VERSION+") is online on port -> " + port);
+			System.out.println("Game server (" + VERSION + ") is online on port -> " + port);
 			new Thread(new Runnable() {
 
 				long ms = 1000; // 1 second
@@ -290,12 +328,12 @@ public class GameServer extends Thread {
 		 */
 		public void execScript(String name) {
 			GameElement target = GameServer.gameServer.getParty().getEntity(this, getTargetAddress());
-			if(target == null) 
+			if (target == null)
 				return;
-			if(containsScript(name)) {
+			if (containsScript(name)) {
 				GameScript script = null;
-				for(GameScript script_ : getScripts()) {
-					if(script_.getName().equals(name)) {
+				for (GameScript script_ : getScripts()) {
+					if (script_.getName().equals(name)) {
 						script = script_;
 						break;
 					}

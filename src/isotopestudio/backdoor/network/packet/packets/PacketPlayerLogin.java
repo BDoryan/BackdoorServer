@@ -24,6 +24,7 @@ public class PacketPlayerLogin extends Packet {
 	public static final int INVALID_AUTHENTICATION_SESSION = 3;
 	public static final int USERNAME_CHANGED = 4;
 	public static final int INVALID_VERSION = 5;
+	public static final int NOT_ALLOWED_TO_LOGIN = 6;
 
 	public PacketPlayerLogin() {
 		super(LOGIN);
@@ -88,6 +89,12 @@ public class PacketPlayerLogin extends Packet {
 					client.disconnect("logout");
 					return;
 				}
+				if(GameServer.isOfficialServer() && !GameServer.allowedUUIDs.contains(response.getInformations().get("uuid"))) {
+					client.sendPacket(new PacketPlayerLoginFailed(PacketPlayerLogin.NOT_ALLOWED_TO_LOGIN));
+					client.disconnect("logout");
+					return;
+				}
+				
 				client.setUsername(username);
 				client.setUUID(UUID.fromString(response.getInformations().get("uuid")+""));
 				client.setTeam(TeamManager.autoJoin(client));
