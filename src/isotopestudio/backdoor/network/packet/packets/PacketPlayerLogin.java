@@ -9,8 +9,6 @@ import doryanbessiere.isotopestudio.api.IsotopeStudioAPI;
 import doryanbessiere.isotopestudio.api.authentification.AuthClient;
 import doryanbessiere.isotopestudio.api.authentification.Response;
 import doryanbessiere.isotopestudio.api.authentification.User;
-import doryanbessiere.isotopestudio.commons.lang.LangMessage;
-import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
