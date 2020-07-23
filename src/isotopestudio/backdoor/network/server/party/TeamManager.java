@@ -17,7 +17,6 @@ public class TeamManager {
 			teams_players.put(team, new ArrayList<NetworkedPlayer>());
 			max_players.put(team, 1);
 		}
-		max_players.put(Team.BLUE, 2);
 	}
 
 	private static boolean debug_mode = false;
