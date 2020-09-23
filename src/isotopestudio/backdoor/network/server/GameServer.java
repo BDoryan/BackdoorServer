@@ -23,6 +23,7 @@ import isotopestudio.backdoor.core.gamescript.GameScript.GameScripts;
 import isotopestudio.backdoor.core.gamescript.GameScriptExecutor;
 import isotopestudio.backdoor.core.map.MapData;
 import isotopestudio.backdoor.core.player.Player;
+import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.packet.PacketListener;
 import isotopestudio.backdoor.network.packet.packets.PacketLoadMap;
@@ -106,6 +107,20 @@ public class GameServer extends Thread {
 		}, 0, 5000);
 
 		TeamManager.init();
+		
+		/**
+		 * Synthax: <team path>=<maximum players> 
+		 * 
+		 * Example arguments: 
+		 * team_red=5 
+		 */
+		for(Team team : Team.values()) {
+			if(arguments.contains(team.getPath())) {
+				TeamManager.max_players.put(team, arguments.getInteger(team.getPath()));
+				
+				System.out.println("Max players for "+team.toString().toUpperCase()+" is now "+TeamManager.max_players.get(team));
+			}
+		}
 
 		gameServer = new GameServer(port);
 		gameServer.start();
