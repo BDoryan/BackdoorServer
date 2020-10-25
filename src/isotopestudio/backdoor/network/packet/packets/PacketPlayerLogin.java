@@ -23,6 +23,7 @@ public class PacketPlayerLogin extends Packet {
 	public static final int USERNAME_CHANGED = 4;
 	public static final int INVALID_VERSION = 5;
 	public static final int NOT_ALLOWED_TO_LOGIN = 6;
+	public static final int WRONG_PASSWORD = 7;
 
 	public PacketPlayerLogin() {
 		super(LOGIN);
@@ -39,6 +40,7 @@ public class PacketPlayerLogin extends Packet {
 
 	private User user;
 	private String gameVersion;
+	private String password;
 
 	public User getUser() {
 		return user;
@@ -47,11 +49,19 @@ public class PacketPlayerLogin extends Packet {
 	public String getGameVersion() {
 		return gameVersion;
 	}
+	
+	/**
+	 * @return the paswword
+	 */
+	public String getPassword() {
+		return password;
+	}
 
 	@Override
 	public void read() {
 		this.user = User.fromJson(readString());
 		this.gameVersion = readString();
+		this.password = readString();
 	}
 
 	@Override
@@ -77,6 +87,12 @@ public class PacketPlayerLogin extends Packet {
 			return;
 		}
 		
+		if(server.isPrivateServer() && getPassword().equals(server.getPassword())) {
+			client.sendPacket(new PacketPlayerLoginFailed(PacketPlayerLogin.WRONG_PASSWORD));
+			client.disconnect("logout");
+			return;
+		}
+		
 		AuthClient authClient = new AuthClient(IsotopeStudioAPI.API_URL + "/");
 		try {
 			Response response = authClient.loginToken(user.getEmail(), user.getToken());
@@ -87,7 +103,7 @@ public class PacketPlayerLogin extends Packet {
 					client.disconnect("logout");
 					return;
 				}
-				if(GameServer.isOfficialServer() && !GameServer.allowedUUIDs.contains(response.getInformations().get("uuid"))) {
+				if((GameServer.allowedUUIDs != null && GameServer.allowedUUIDs.size() > 0) && !GameServer.allowedUUIDs.contains(response.getInformations().get("uuid"))) {
 					client.sendPacket(new PacketPlayerLoginFailed(PacketPlayerLogin.NOT_ALLOWED_TO_LOGIN));
 					client.disconnect("logout");
 					return;

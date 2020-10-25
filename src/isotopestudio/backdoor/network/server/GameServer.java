@@ -68,6 +68,11 @@ public class GameServer extends Thread {
 			} catch (Exception e) {
 			}
 		}
+		
+		String serverPassword = null;
+		if(arguments.contains("password")) {
+			serverPassword = arguments.getString("password");
+		}
 
 		if (arguments.contains("online") && arguments.getString("online").equals("true")) {
 			try {
@@ -122,7 +127,7 @@ public class GameServer extends Thread {
 			}
 		}
 
-		gameServer = new GameServer(port);
+		gameServer = new GameServer(port, serverPassword);
 		gameServer.start();
 	}
 
@@ -135,11 +140,35 @@ public class GameServer extends Thread {
 	}
 
 	private int port;
+	private String password;
 
-	public GameServer(int port) {
+	public GameServer(int port, String password) {
 		this.port = port;
+		this.password = password;
 	}
 
+	
+	/**
+	 * @return true if the don't use a password
+	 */
+	public boolean isPublicServer() {
+		return password == null;
+	}
+	
+	/**
+	 * @return true if the use a password
+	 */
+	public boolean isPrivateServer() {
+		return password != null;
+	}
+	
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
 	private ArrayList<GameServerClient> clients = new ArrayList<GameServerClient>();
 	private ArrayList<NetworkedPlayer> players = new ArrayList<NetworkedPlayer>();
 

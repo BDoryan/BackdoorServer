@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>isotopestudio.backdoor.network</groupId>
-	<artifactId>BackdoorServer</artifactId>
-	<version>0.0.72-SNAPSHOT</version>
+	<artifactId>backdoorserver</artifactId>
+	<version>0.0.74-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
@@ -99,6 +99,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub BDoryan Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/BDoryan/IsotopeStudioRepository</url>
+		</repository>
+	</distributionManagement>
 	
 	<repositories>
 		<repository>
