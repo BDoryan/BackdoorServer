@@ -9,6 +9,7 @@ import doryanbessiere.isotopestudio.api.IsotopeStudioAPI;
 import doryanbessiere.isotopestudio.api.authentification.AuthClient;
 import doryanbessiere.isotopestudio.api.authentification.Response;
 import doryanbessiere.isotopestudio.api.authentification.User;
+import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
@@ -103,15 +104,24 @@ public class PacketPlayerLogin extends Packet {
 					client.disconnect("logout");
 					return;
 				}
-				if((GameServer.allowedUUIDs != null && GameServer.allowedUUIDs.size() > 0) && !GameServer.allowedUUIDs.contains(response.getInformations().get("uuid"))) {
+				
+				String uuidString = (String)response.getInformations().get("uuid");
+				
+				if(GameServer.getConfiguration().getWhitelist().size() > 0 && !GameServer.getConfiguration().getWhitelist().contains(uuidString)) {
 					client.sendPacket(new PacketPlayerLoginFailed(PacketPlayerLogin.NOT_ALLOWED_TO_LOGIN));
-					client.disconnect("logout");
+					client.disconnect("access_denied");
 					return;
 				}
 				
 				client.setUsername(username);
 				client.setUUID(UUID.fromString(response.getInformations().get("uuid")+""));
-				client.setTeam(TeamManager.autoJoin(client));
+				if(GameServer.getConfiguration().hasRandomTeam()) {
+					client.setTeam(TeamManager.autoJoin(client));
+				} else {
+					Team team = GameServer.getConfiguration().getTeamAssigned().get(uuidString);
+					TeamManager.addPlayer(team, client);
+					client.setTeam(team);
+				}
 				
 				server.getPlayers().add(client);
 				server.sendAll(new PacketPlayerConnected(client.getUsername(), client.getUUID().toString(), client.getTeam()));

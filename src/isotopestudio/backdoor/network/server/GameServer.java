@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,14 +14,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import doryanbessiere.isotopestudio.api.mysql.SQLDatabase;
 import doryanbessiere.isotopestudio.commons.GsonInstance;
-import doryanbessiere.isotopestudio.commons.RunnerUtils;
 import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
 import isotopestudio.backdoor.core.gamescript.GameScript;
-import isotopestudio.backdoor.core.gamescript.GameScript.GameScripts;
-import isotopestudio.backdoor.core.gamescript.GameScriptExecutor;
 import isotopestudio.backdoor.core.map.MapData;
 import isotopestudio.backdoor.core.player.Player;
+import isotopestudio.backdoor.core.server.configuration.GameServerConfiguration;
 import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.packet.PacketListener;
@@ -39,18 +36,16 @@ import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 public class GameServer extends Thread {
 
-	public static GameServer gameServer;
 	public static String VERSION = null;
 
-	public static boolean official_server = false;
+	public static GameServer gameServer;
 	public static SQLDatabase database;
-
-	public static UUID session = UUID.randomUUID();
-	public static ArrayList<String> allowedUUIDs = new ArrayList<>();
-
+	
+	public static GameServerConfiguration configuration;
+	
+	public static boolean offcialServer = false;
+	
 	public static void main(String[] args) {
-		RunnerUtils arguments = new RunnerUtils(args);
-		arguments.read();
 		try {
 			java.io.InputStream is = GameServer.class.getClass().getResourceAsStream("/maven.properties");
 			java.util.Properties p = new Properties();
@@ -60,31 +55,25 @@ public class GameServer extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		int port = 66;
-		if (arguments.contains("port")) {
-			try {
-				port = Integer.valueOf(arguments.getString("port"));
-			} catch (Exception e) {
-			}
+		
+		String jsonConfiguration = "";
+		for(int i = 0; i < args.length; i++) {
+			jsonConfiguration += " " + args[i];
 		}
 		
-		String serverPassword = null;
-		if(arguments.contains("password")) {
-			serverPassword = arguments.getString("password");
-		}
+		configuration = GsonInstance.instance().fromJson(jsonConfiguration, GameServerConfiguration.class);
 
-		if (arguments.contains("online") && arguments.getString("online").equals("true")) {
+		if (configuration.hasDatabase()) {
 			try {
-				String host = arguments.getString("mysql.host");
-				String database = arguments.getString("mysql.database");
-				String username = arguments.getString("mysql.username");
-				String password = arguments.getString("mysql.password");
-
-				allowedUUIDs.addAll(Arrays.asList(arguments.getString("players").split(",")));
+				String host = configuration.getMysqlHost();
+				String database = configuration.getMysqlDatabase();
+				String username = configuration.getMysqlUsername();
+				String password = configuration.getMysqlPassword();
 
 				GameServer.database = new SQLDatabase(host, database, username, password);
 				GameServer.database.connect();
+				
+				offcialServer = true;
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("Not every argument is recoverable!");
@@ -120,19 +109,24 @@ public class GameServer extends Thread {
 		 * team_red=5 
 		 */
 		for(Team team : Team.values()) {
-			if(arguments.contains(team.getPath())) {
-				TeamManager.max_players.put(team, arguments.getInteger(team.getPath()));
+				TeamManager.max_players.put(team, configuration.getVersus().getMaximum());
 				
 				System.out.println("Max players for "+team.toString().toUpperCase()+" is now "+TeamManager.max_players.get(team));
-			}
 		}
 
-		gameServer = new GameServer(port, serverPassword);
+		gameServer = new GameServer(configuration.getPort(), configuration.getPassword());
 		gameServer.start();
+	}
+	
+	/**
+	 * @return the configuration
+	 */
+	public static GameServerConfiguration getConfiguration() {
+		return configuration;
 	}
 
 	public static boolean isOfficialServer() {
-		return official_server;
+		return offcialServer;
 	}
 
 	public static SQLDatabase getDatabase() {
