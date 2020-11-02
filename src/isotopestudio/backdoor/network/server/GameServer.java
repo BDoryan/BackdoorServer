@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import doryanbessiere.isotopestudio.api.mysql.SQLDatabase;
 import doryanbessiere.isotopestudio.commons.GsonInstance;
+import doryanbessiere.isotopestudio.commons.mysql.SQLDatabase;
 import isotopestudio.backdoor.core.elements.GameElement;
 import isotopestudio.backdoor.core.elements.GameElementType;
 import isotopestudio.backdoor.core.gamescript.GameScript;

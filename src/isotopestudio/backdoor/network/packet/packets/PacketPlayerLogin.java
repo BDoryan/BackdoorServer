@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.apache.http.client.ClientProtocolException;
 
 import doryanbessiere.isotopestudio.api.IsotopeStudioAPI;
-import doryanbessiere.isotopestudio.api.authentification.AuthClient;
-import doryanbessiere.isotopestudio.api.authentification.Response;
-import doryanbessiere.isotopestudio.api.authentification.User;
+import doryanbessiere.isotopestudio.api.user.User;
+import doryanbessiere.isotopestudio.api.user.UserAPI;
+import doryanbessiere.isotopestudio.api.web.Response;
 import isotopestudio.backdoor.core.team.Team;
 import isotopestudio.backdoor.network.packet.Packet;
 import isotopestudio.backdoor.network.server.GameServer;
@@ -94,7 +94,7 @@ public class PacketPlayerLogin extends Packet {
 			return;
 		}
 		
-		AuthClient authClient = new AuthClient(IsotopeStudioAPI.API_URL + "/");
+		UserAPI authClient = new UserAPI(IsotopeStudioAPI.API_URL);
 		try {
 			Response response = authClient.loginToken(user.getEmail(), user.getToken());
 			if (response.getPath().equals("success")) {
