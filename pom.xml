@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>isotopestudio.backdoor.network</groupId>
 	<artifactId>backdoorserver</artifactId>
-	<version>0.0.77-SNAPSHOT</version>
+	<version>0.0.78-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
