@@ -7,8 +7,8 @@ import isotopestudio.backdoor.network.server.GameServer;
 import isotopestudio.backdoor.network.server.GameServer.GameServerClient;
 
 /**
- * @author BESSIERE Doryan
- * @github https://www.github.com/DoryanBessiere/
+ * @author BDoryan
+ * @github https://www.github.com/BDoryan/
  */
 public class PacketPlayerBuyGameScript extends Packet {
 

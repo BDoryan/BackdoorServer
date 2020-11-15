@@ -10,8 +10,8 @@ import isotopestudio.backdoor.core.player.Player;
 import isotopestudio.backdoor.network.server.player.NetworkedPlayer;
 
 /**
- * @author BESSIERE Doryan
- * @github https://www.github.com/DoryanBessiere/
+ * @author BDoryan
+ * @github https://www.github.com/BDoryan/
  */
 public class GameScriptsManager {
 
