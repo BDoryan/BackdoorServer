@@ -28,6 +28,9 @@ public class ServerMapData {
 		
 		GameElement blue_server= new GameElement(GameElementType.SERVER, "blue_server", Team.BLUE);
 
+		red_server.setMaxPoints(300);
+		blue_server.setMaxPoints(300);
+		
 		mapData.team_servers.put(Team.RED, red_server);
 		mapData.team_servers.put(Team.BLUE, blue_server);
 
